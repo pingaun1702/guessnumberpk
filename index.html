@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
 <meta charset="UTF-8">
 <title>เกมทายเลข 💖</title>
 
@@ -97,6 +101,45 @@ button:hover {
   0% { transform: translateX(100%); }
   100% { transform: translateX(-100%); }
 }
+
+/* ===== ทำให้ responsive ทุกจอ ===== */
+
+.box {
+  width: 90%;
+  max-width: 500px;
+}
+
+input {
+  width: 80%;
+  max-width: 200px;
+}
+
+/* มือถือ */
+@media screen and (max-width: 768px) {
+  body {
+    padding: 20px;
+    font-size: 18px;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  .box {
+    width: 95%;
+    padding: 20px;
+  }
+
+  button {
+    width: 90%;
+    font-size: 1rem;
+  }
+
+  input {
+    width: 90%;
+  }
+}
+
 </style>
 </head>
 
