@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>เกมทายเลข 💖</title>
+
+<!-- พลุ -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+body {
+  font-family: Arial;
+  text-align: center;
+  background: linear-gradient(135deg, #ffe4ec, #ffffff);
+  color: #ff3d7f;
+  padding: 50px;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+.box {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  display: inline-block;
+  box-shadow: 0 10px 30px rgba(255,105,180,0.2);
+}
+
+input {
+  padding: 10px;
+  font-size: 1.2rem;
+  width: 120px;
+  border-radius: 10px;
+  border: 2px solid #ffb6c1;
+  text-align: center;
+}
+
+button {
+  padding: 10px 20px;
+  margin: 10px;
+  border-radius: 10px;
+  border: none;
+  background: #ff6fa5;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  background: #ff3d7f;
+}
+
+#result {
+  margin-top: 20px;
+  font-size: 1.3rem;
+  min-height: 50px;
+}
+
+#attempts {
+  opacity: 0.8;
+}
+
+.shake {
+  animation: shake 0.25s;
+}
+
+@keyframes shake {
+  0% { transform: translate(2px,2px); }
+  25% { transform: translate(-2px,-2px); }
+  50% { transform: translate(2px,-2px); }
+  75% { transform: translate(-2px,2px); }
+  100% { transform: translate(0,0); }
+}
+
+/* banner */
+.banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #ff6fa5;
+  color: white;
+  padding: 10px;
+  font-weight: bold;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.marquee {
+  display: inline-block;
+  animation: scroll 12s linear infinite;
+}
+
+@keyframes scroll {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+</style>
+</head>
+
+<body>
+
+<h1>🎀 เกมทายเลขปัญญาอ่อน 🎀</h1>
+
+<div class="box">
+  <p>เดาเลข 1 - 100</p>
+
+  <input type="number" id="guess">
+  <br>
+
+  <button onclick="check()">ทาย!</button>
+  <button onclick="restart()">เริ่มใหม่</button>
+
+  <div id="result"></div>
+  <div id="attempts"></div>
+</div>
+
+<!-- banner -->
+<div class="banner">
+  <div class="marquee">
+    IG: @pvm.zx | เกมทายเลข | เล่นให้สนุก 
+  </div>
+</div>
+
+<script>
+let target = Math.floor(Math.random() * 100) + 1;
+let attempts = 0;
+
+const troll = [
+  "มั่วจัด",
+  "คิดดีแล้วหรอ",
+  "เอาจริงเด้",
+  "ใกล้ละมั้งนะ",
+  "เดามั่วแน่เลย อิอิ"
+];
+
+// พลุ
+function firework() {
+  confetti({
+    particleCount: 180,
+    spread: 90,
+    origin: { y: 0.6 }
+  });
+}
+
+function check() {
+  let guess = Number(document.getElementById("guess").value);
+  let result = document.getElementById("result");
+
+  // กัน error + กันเลขเกิน 100
+  if (!guess) return;
+
+  if (guess < 1 || guess > 100) {
+    result.innerHTML = "ใส่เลข 1 - 100 เท่านั้น";
+    shake();
+    return;
+  }
+
+  attempts++;
+
+  // เลขขยับเล็กน้อย
+  if (Math.random() < 0.2) {
+    target += Math.floor(Math.random() * 5) - 2;
+    if (target < 1) target = 1;
+    if (target > 100) target = 100; // กันหลุดเกิน 100
+  }
+
+  let lie = Math.random() < 0.3;
+
+  if (guess === target && Math.random() < 0.2) {
+    result.innerHTML = "ถูก!!! (ล้อเล่น)";
+    shake();
+    return;
+  }
+
+  if (guess === target) {
+    result.innerHTML = `
+        <b>ชนะแล้ว เเคปเเล้วทักมาเลย</b><br>
+        IG: <b>@pv.ingun</b>
+    `;
+
+    firework();
+    return;
+  }
+
+  let text = "";
+
+  if (guess > target) {
+    text = lie ? "ต่ำไป!" : "สูงไป!";
+  } else {
+    text = lie ? "สูงไป!" : "ต่ำไป!";
+  }
+
+  result.innerHTML = text + "<br>" + troll[Math.floor(Math.random()*troll.length)];
+
+  shake();
+
+  document.getElementById("attempts").innerText =
+    "ทายไปแล้ว: " + attempts + " ครั้ง";
+
+  document.getElementById("guess").value = "";
+}
+
+function shake() {
+  let r = document.getElementById("result");
+  r.classList.add("shake");
+  setTimeout(() => r.classList.remove("shake"), 250);
+}
+
+function restart() {
+  target = Math.floor(Math.random() * 100) + 1;
+  attempts = 0;
+  document.getElementById("result").innerHTML = "";
+  document.getElementById("attempts").innerText = "";
+}
+</script>
+
+</body>
+</html>
